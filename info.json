@@ -1,0 +1,11 @@
+{
+    "name": "LabMonitor",
+    "author": "ixu",
+    "version": "0.1.4",
+    "factorio_version": "1.1",
+    "title": "LabMonitor",
+    "description": "Monitor lab complex.",
+    "dependencies": [
+        "base >= 1.0"
+    ]
+}
