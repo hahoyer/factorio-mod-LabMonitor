@@ -89,7 +89,7 @@ local function OpenGui(player, entity)
     {
       Gui.section
       {
-        name = "Monitor",
+        name = "lab-monitor",
         Gui.ChooseElementButton("LabsSignal","signal", data.LabsSignal),
         Gui.ChooseElementButton("InactiveLabsSignal","signal",data.InactiveLabsSignal),
       },
@@ -101,7 +101,7 @@ end
 local function on_gui_opened(event)
   local entity = event.entity
   if not entity then return end
-  if entity.name == "metalab-monitor" then OpenGui(game.players[event.player_index], entity) end
+  if entity.name == Constants.EntityName then OpenGui(game.players[event.player_index], entity) end
 end
 
 local function on_gui_closed(event)
@@ -114,18 +114,23 @@ end
 local function on_init()
   global.Monitors = global.Monitors or {}
   global.Labs = global.Labs or {}
+  for _,force in pairs(game.forces) do
+    if force.technologies[Constants.Technology].researched then
+      force.recipes[Constants.EntityName].enabled = true
+    end
+  end
 end
 
 local function on_built(event)
   local entity = event.created_entity or event.entity
-  if entity and entity.name == "metalab-monitor" then
+  if entity and entity.name == Constants.EntityName then
     global.Monitors[entity.unit_number] =
     {
       Entity = entity,
       LabsSignal= {type=Constants.LabsSignal.type, name=Constants.LabsSignal.name},
       InactiveLabsSignal = {type=Constants.InactiveLabsSignal.type,name=Constants.InactiveLabsSignal.name}
     }
-  elseif entity and entity.name == "lab" then
+  elseif entity and entity.type == "lab" then
     table.insert(global.Labs,entity)
   end
 
@@ -133,9 +138,9 @@ end
 
 local function on_destroyed(event)
   local entity = event.entity
-  if entity and entity.name == "metalab-monitor" then
+  if entity and entity.name == Constants.EntityName then
     global.Monitors[entity.unit_number] = nil
-  elseif entity and entity.name == "lab" then
+  elseif entity and entity.type == "lab" then
     Table.Remove( global.Labs, entity)
   end
 end
@@ -148,7 +153,7 @@ local function on_gui_elem_changed(event)
 	local element = event.element
   if element and element.valid and element.name and element.name:match("^"..Constants.ModName..":") then
     local gui_name, unit_number, elementPath = Gui.parse_entity_gui_name(element.name)
-    if gui_name == 'metalab-monitor' then
+    if gui_name == Constants.EntityName then
       local parts = Gui.split(elementPath, ":")
       if parts[1] == "Monitor" then
         global.Monitors[unit_number][parts[2]] = element.elem_value

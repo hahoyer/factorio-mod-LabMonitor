@@ -2,7 +2,7 @@ local Constants = require("constants")
 local Result = {}
 
 local MOD_NAME = Constants.ModName
-local LOCALE_CATEGORY = MOD_NAME..'-gui'
+local LOCALE_CATEGORY = 'gui'
 
 local function build_list(specs, root)
 	for _, spec in ipairs(specs) do
