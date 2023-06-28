@@ -1,3 +1,4 @@
+local gui = require("__flib__.gui-beta")
 local Constants = require('constants')
 local Table = require('Table')
 local Gui = require('gui')
@@ -28,17 +29,17 @@ local function CollectCurrentResearchIngredients()
 
   local currentResearch = game.forces.player.current_research
   if currentResearch == nil then return {} end
-  
+
   local inactiveLabs = GetInactiveLabs(labs)
   local ingredients = currentResearch.research_unit_ingredients
   local missingIngredients = Table.ToPairs
   (
-    ingredients, 
+    ingredients,
     function(ingredient) return ingredient.name end,
     function(ingredient) return CountNotFoundIngredients(inactiveLabs, ingredient.name) end
   )
 
-  return 
+  return
   {
     MissingIngredients = missingIngredients,
     Labs = #labs,
@@ -81,6 +82,10 @@ local function on_tick()
   CalculateSignals()
 end
 
+local function GetGui(player, entity)
+
+end
+
 local function OpenGui(player, entity)
   local data = global.Monitors[entity.unit_number]
   Gui.entity
@@ -89,7 +94,7 @@ local function OpenGui(player, entity)
     {
       Gui.section
       {
-        name = "lab-monitor",
+        name = Constants.EntityName,
         Gui.ChooseElementButton("LabsSignal","signal", data.LabsSignal),
         Gui.ChooseElementButton("InactiveLabsSignal","signal",data.InactiveLabsSignal),
       },

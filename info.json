@@ -6,6 +6,7 @@
     "title": "LabMonitor",
     "description": "Monitor lab complex.",
     "dependencies": [
-        "base >= 1.0"
+        "base >= 1.1",
+        "flib >= 0.9.2"
     ]
 }
