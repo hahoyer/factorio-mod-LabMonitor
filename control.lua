@@ -160,7 +160,7 @@ local function on_gui_elem_changed(event)
     local gui_name, unit_number, elementPath = Gui.parse_entity_gui_name(element.name)
     if gui_name == Constants.EntityName then
       local parts = Gui.split(elementPath, ":")
-      if parts[1] == "Monitor" then
+      if parts[1] == Constants.EntityName then
         global.Monitors[unit_number][parts[2]] = element.elem_value
       end
     end
